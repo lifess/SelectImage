@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
@@ -74,20 +74,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void drawCircle(int x, int y) {
 //        Toast.makeText(MainActivity.this, x + "----" + y, Toast.LENGTH_SHORT).show();
-        ViewGroup.LayoutParams layoutParams = ivBigImage.getLayoutParams();
-        layoutParams.width = 1080;
-        layoutParams.height = 1920;
-        ivBigImage.setLayoutParams(layoutParams);
-        int screenWidth = RatioUtil.getScreenWidth(this);
-        int screenHeight = RatioUtil.getScreenHeight(this);
-        int w = screenWidth / layoutParams.width;
-        int h = screenHeight / layoutParams.height;
+        double screenWidth = RatioUtil.getScreenWidth(this);
+        double screenHeight = RatioUtil.getScreenHeight(this);
+        //按我手机大小先确定一个坐标点
+        double w = RatioUtil.round(screenWidth / 1080.00, 2);
+        double h = RatioUtil.round(screenHeight / 2160.00, 2);
+        Log.i("niyade", "drawCircle: " + w + "---------" + h);
         for (int i = 0; i < mList.size(); i++) {
             PointBean pointBean = mList.get(i);
-            int startX = pointBean.getStartX() * w;
-            int startY = pointBean.getStartY() * h;
-            int endX = pointBean.getEndX() * w;
-            int endY = pointBean.getEndY() * h;
+            int startX = (int) (pointBean.getStartX() * w);
+            int startY = (int) (pointBean.getStartY() * h);
+            int endX = (int) (pointBean.getEndX() * w);
+            int endY = (int) (pointBean.getEndY() * h);
+            Log.i("niyade", "drawCircle: " + startX + "---------" + startY+"----------"+endX+"-----"+endY);
             if (x >= startX && x <= endX && y >= startY && y <= endY) {
                 Iterator<int[]> iterator = list.iterator();
                 while (iterator.hasNext()) {
