@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -16,11 +17,11 @@ import androidx.annotation.Nullable;
 public class SelectImage extends View {
 
     private Paint paint;
-    private int mCircleX;
-    private int mCircleY;
-    private int mRadius;
-    private List<int[]> list = new ArrayList<>();
-    private Paint paint1;
+    private int mStartX;
+    private int mStartY;
+    private int mEndX;
+    private int mEndY;
+    private List<int[]> rectList = new ArrayList<>();
 
     public SelectImage(Context context) {
         super(context);
@@ -35,34 +36,30 @@ public class SelectImage extends View {
     private void init() {
         paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(getResources().getColor(R.color.light_yellow));
+        paint.setColor(Color.YELLOW);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(30);
-        paint1 = new Paint();
-        paint1.setAntiAlias(true);
-        paint1.setColor(Color.YELLOW);
-        paint1.setStyle(Paint.Style.STROKE);
-        paint1.setStrokeWidth(20);
+        paint.setStrokeWidth(10);
     }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        canvas.drawCircle(mCircleX, mCircleY, mRadius, paint);
-        canvas.drawCircle(mCircleX, mCircleY, mRadius - 25, paint1);
-        for (int i = 0; i < list.size(); i++) {
-            int[] ints = list.get(i);
-            canvas.drawCircle(ints[0], ints[1], ints[2], paint);
-            canvas.drawCircle(ints[0], ints[1], ints[2] - 25, paint1);
+        RectF rectF = new RectF(mStartX,mStartY,mEndX,mEndY);
+        canvas.drawRect(rectF, paint);
+        for (int i = 0; i < rectList.size(); i++) {
+            int[] ints = rectList.get(i);
+            RectF rect = new RectF(ints[0],ints[1],ints[2],ints[3]);
+            canvas.drawRect(rect, paint);
         }
     }
 
-    public void getWz(int circleX, int circleY, int radius) {
-        mCircleX = circleX;
-        mCircleY = circleY;
-        mRadius = radius;
+    public void getWz(int startX, int startY, int endX, int endY) {
+        mStartX = startX;
+        mStartY = startY;
+        mEndX = endX;
+        mEndY = endY;
         invalidate();
-        int[] data = {mCircleX, mCircleY, mRadius};
-        list.add(data);
+        int[] rectData = {mStartX,mStartY,mEndX,mEndY};
+        rectList.add(rectData);
     }
 }

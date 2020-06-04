@@ -3,16 +3,24 @@ package com.ss.example.selectimage;
 public class PointBean {
 
     /**
-     * startX : 80
-     * endX : 270
+     * height : 185
+     * startX : 50
      * startY : 1000
-     * endY : 1166
+     * width : 200
      */
 
+    private int height;
     private int startX;
-    private int endX;
     private int startY;
-    private int endY;
+    private int width;
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
     public int getStartX() {
         return startX;
@@ -20,14 +28,6 @@ public class PointBean {
 
     public void setStartX(int startX) {
         this.startX = startX;
-    }
-
-    public int getEndX() {
-        return endX;
-    }
-
-    public void setEndX(int endX) {
-        this.endX = endX;
     }
 
     public int getStartY() {
@@ -38,11 +38,11 @@ public class PointBean {
         this.startY = startY;
     }
 
-    public int getEndY() {
-        return endY;
+    public int getWidth() {
+        return width;
     }
 
-    public void setEndY(int endY) {
-        this.endY = endY;
+    public void setWidth(int width) {
+        this.width = width;
     }
 }

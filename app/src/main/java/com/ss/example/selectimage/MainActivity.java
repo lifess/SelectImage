@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        String data = "[{\"startX\": 40,\"endX\": 270,\"startY\": 900,\"endY\": 1300},{\"startX\": 730,\"endX\": 990,\"startY\": 820,\"endY\": 1000},{\"startX\": 310,\"endX\": 690,\"startY\": 900,\"endY\": 1200}]";
+        String data = "[    {        \"height\": 185,        \"startX\": 50,        \"startY\": 1000,        \"width\": 200    },    {        \"height\": 190,        \"startX\": 730,        \"startY\": 810,        \"width\": 260    },    {        \"height\": 300,        \"startX\": 310,        \"startY\": 900,        \"width\": 370    }]";
         Type type = new TypeToken<ArrayList<PointBean>>() {
         }.getType();
         List<PointBean> pointBeans = null;
@@ -84,23 +85,22 @@ public class MainActivity extends AppCompatActivity {
             PointBean pointBean = mList.get(i);
             int startX = (int) (pointBean.getStartX() * w);
             int startY = (int) (pointBean.getStartY() * h);
-            int endX = (int) (pointBean.getEndX() * w);
-            int endY = (int) (pointBean.getEndY() * h);
-            Log.i("niyade", "drawCircle: " + startX + "---------" + startY+"----------"+endX+"-----"+endY);
-            if (x >= startX && x <= endX && y >= startY && y <= endY) {
+            int endX = (int) (pointBean.getWidth() * w);
+            int endY = (int) (pointBean.getHeight() * h);
+            int endW = (startX + endX);
+            int endH = (startY + endY);
+            Log.i("niyade", "drawCircle: " + startX + "---------" + startY + "----------" + endX + "-----" + endY);
+            if (x >= startX && x <= endW && y >= startY && y <= endH) {
                 Iterator<int[]> iterator = list.iterator();
                 while (iterator.hasNext()) {
                     int[] next = iterator.next();
-                    if (next[0] == startX && next[1] == endX && next[2] == startY && next[3] == endY) {
+                    if (next[0] == startX && next[1] == endW && next[2] == startY && next[3] == endH) {
                         return;
                     }
                 }
-                int radius = (endX - startX) / 2;
-                int circleX = startX + (endX - startX) / 2;
-                int circleY = startY + (endY - startY) / 2;
-                ivCircle.getWz(circleX, circleY, radius);
+                ivCircle.getWz(startX, startY, endW, endH);
                 playMusic();
-                int[] data = {startX, endX, startY, endY};
+                int[] data = {startX, endW, startY, endH};
                 list.add(data);
             }
         }
